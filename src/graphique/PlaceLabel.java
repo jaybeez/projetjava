@@ -23,12 +23,16 @@ public class PlaceLabel {
     private String txt;
     private JTextField txtField;
     
-    public JTextField PlaceLabel(int PosX, int PosY, int width, int high, String text){
-    txtField=new JTextField(text);
-    
+    public PlaceLabel(int PosX, int PosY, int width, int high, String text){
+        
+    txtField = new JTextField(text);
     txtField.setBounds(PosX,PosY,width,high);
     txtField.setVisible(true);
-}
+
+    }
+    
+    public void addActionListener(ActionListener l)
+    {txtField.addActionListener(l);}
 
     /**
      * @return the positionX
@@ -112,6 +116,20 @@ public class PlaceLabel {
      */
     public void setText(String txt) {
         this.txt = txt;
+    }
+    
+    /**
+     * @return the txtField
+     */
+    public JTextField gettxtField() {
+        return txtField;
+    }
+
+    /**
+     * @param txtField the txt to set
+     */
+    public void settxtField(JTextField txtField) {
+        this.txtField = txtField;
     }
     
 }

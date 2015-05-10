@@ -6,15 +6,17 @@ import graphique.Fenetre;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-
+/*
 public class DocteurDAO extends DAO<Docteur> {
     
-        @Override
-	public Docteur create(Docteur obj) {
+    @Override
+    public Docteur create(Docteur obj) 
+    {
             boolean ok;
             Docteur aux;
             Connexion conn=Fenetre.getConn();
@@ -35,18 +37,53 @@ public class DocteurDAO extends DAO<Docteur> {
                 JOptionPane.showMessageDialog(null, "Pb lignes", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
          }
 	
-	/*//Verification de l'existence du docteur
+	//Verification de l'existence du docteur
        for(int i=1;i<=Lignes;i++){
         aux=find(i,false);
         if(docteur.getNom().compareTo(aux.getNom())==0 &&
            docteur.getPrenom().compareTo(aux.getPrenom())==0 &&
            docteur.getTel().compareTo(aux.getTel())==0) 
             autorisation=false;
-       }*/Docteur x=null;
+       }Docteur x=null;
         return x;
-        }
+    }
         
-        public Docteur findDocteur(int id,boolean popup){
+     
+    @Override
+    public Docteur find(int id) throws SQLException
+    {
+            Docteur doc = new Docteur();
+            
+            try {
+                conn.setRset(conn.getStmt().executeQuery("SELECT employe.* , docteur.specialite FROM employe,docteur WHERE employe.numero=docteur.numero && employe.numero="+Integer.toString(id)));
+            } catch (SQLException ex) {
+                Logger.getLogger(DocteurDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                                          
+            try {
+                if(!conn.getRset().first())
+                {
+                    System.out.println("Docteur non trouvé");
+                    throw new SQLException();
+                }
+                conn.setRsetMeta(conn.getRset().getMetaData());
+            
+                doc.setNumero(Integer.parseInt(conn.getRset().getString(1)));
+                doc.setNom(conn.getRset().getString(2));
+                doc.setPrenom(conn.getRset().getString(3));
+                doc.setAdresse(conn.getRset().getString(4));
+                doc.setTelephone(conn.getRset().getString((5)));
+                doc.setSpecialite(conn.getRset().getString(6));
+                
+            } catch (SQLException e) {
+                throw new  SQLException(e);
+            }
+            
+            return (doc);
+    }
+        
+        
+    public Docteur findDocteur(int id,boolean popup){
         //Selection si ca se passe mal : retourner null
         Connexion conn=Fenetre.getConn();
             try {
@@ -76,56 +113,21 @@ public class DocteurDAO extends DAO<Docteur> {
             return null;
         }
              
-        return docteur; }
+        return docteur;
+    }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-	@Override
-	public Docteur update(Docteur obj) {
-		try {
-			
-                this .connect	
-                     .createStatement(
-                    	ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                        ResultSet.CONCUR_UPDATABLE
-                     ).executeUpdate(
-                    	"UPDATE langage SET lan_nom = '" + obj.getNom() + "'"+
-                    	" WHERE lan_id = " + obj.getId()
-                     );
-			
-			obj = this.find(obj.getId());
-	    } catch (SQLException e) {
-	            e.printStackTrace();
-	    }
-	    
-	    return obj;
-	}
+   
+    @Override
+    public Docteur update(Docteur obj) {
 
-@Override
-	public void delete(Docteur obj) {
-		try {
-			
-                this    .connect
-                    	.createStatement(
-                             ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                             ResultSet.CONCUR_UPDATABLE
-                        ).executeUpdate(
-                             "DELETE FROM langage WHERE lan_id = " + obj.getId()
-                        );
-			
-	    } catch (SQLException e) {
-	            e.printStackTrace();
-	    }
-	}
+
+        return obj;
+    }
+
+    @Override
+    public void delete(Docteur obj) {
+
+    }
 	
 	
-}
+}*/

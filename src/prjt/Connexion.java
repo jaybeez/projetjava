@@ -1,64 +1,110 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prjt;
 
-/*
- * 
- * Librairies importées
- */
+
 import java.sql.*;
 import java.util.ArrayList;
 
-/*
- * 
- * Connexion a votre BDD via le tunnel SSH
- * 
- * @author segado
- */
+
 public class Connexion {
 
-    /**
-     * Attributs prives : connexion JDBC, statement, ordre requete et resultat requete
-     */
-    private Connection conn;
-    private Statement stmt;
-    private ResultSet rset;
-    private ResultSetMetaData rsetMeta;
-    /**
+   
+    protected Connection conn;
+    protected Statement stmt;
+    protected ResultSet rset;
+    protected ResultSetMetaData rsetMeta;
 
-    /**
-     * Constructeur avec 4 paramètres : username et password ECE, login et password de la BDD
-     */
+    private SSHTunnel ssh;
+    private boolean autorisation = false;
+    public static boolean locale = true;
+
+
+    public Connexion(String NomBase, String Password) throws SQLException, ClassNotFoundException
+    {
+        Class.forName("com.mysql.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/" + NomBase,"root", Password);
+        System.out.println("Connexion reussie");
+        stmt = conn.createStatement();
+    }
+    
     public Connexion(String usernameECE, String passwordECE, String loginDatabase, String passwordDatabase) throws SQLException, ClassNotFoundException {
-        // chargement driver "com.mysql.jdbc.Driver"
+        
         Class.forName("com.mysql.jdbc.Driver");
 
-        // Connexion via le tunnel SSH avec le username et le password ECE
-        SSHTunnel ssh = new SSHTunnel(usernameECE, passwordECE);
+ 
+        ssh = new SSHTunnel(usernameECE, passwordECE);
 
         if (ssh.connect()) {
             System.out.println("Connexion reussie");
 
-            // url de connexion "jdbc:mysql://localhost:3305/usernameECE"
             String urlDatabase = "jdbc:mysql://localhost:3305/" + usernameECE;
 
-            //création d'une connexion JDBC à la base
             conn = DriverManager.getConnection(urlDatabase, loginDatabase, passwordDatabase);
 
-            // création d'un ordre SQL (statement)
             stmt = conn.createStatement();
 
          
         }
     }
 
-   
+    public ArrayList<String> remplirChampsTable(String table) throws SQLException {
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery("select * from " + table);
 
-    /**
-     * Méthode qui execute une requete de MAJ en parametre
-     */
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+
+        // creation d'une ArrayList de String
+        ArrayList<String> liste;
+        liste = new ArrayList<String>();
+
+        // Ajouter tous les champs du resultat dans l'ArrayList
+        for (int i = 0; i < nbColonne; i++) {
+            liste.add(rsetMeta.getColumnLabel(i + 1));
+        }
+
+        // Retourner l'ArrayList
+        return liste;
+    }
+    
+    public ArrayList<String> remplirChampsRequete(String requete, String separateur) throws SQLException {
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+
+        // creation d'une ArrayList de String
+        ArrayList<String> liste;
+        liste = new ArrayList<String>();
+
+        // tant qu'il reste une ligne 
+        while (rset.next()) {
+            String champs;
+            champs = rset.getString(1); // ajouter premier champ
+
+            // Concatener les champs de la ligne separes par ,
+            for (int i = 1; i < nbColonne; i++) {
+                champs = champs + separateur + rset.getString(i+1);
+            }
+
+            // ajouter un "\n" à la ligne des champs
+            champs = champs + "\n";
+
+            // ajouter les champs de la ligne dans l'ArrayList
+            liste.add(champs);
+        }
+
+        // Retourner l'ArrayList
+        return liste;
+    }
+    
+
     public void executeUpdate(String requeteMaj) throws SQLException {
         getStmt().executeUpdate(requeteMaj);
     }
@@ -118,4 +164,15 @@ public class Connexion {
     public void setRsetMeta(ResultSetMetaData rsetMeta) {
         this.rsetMeta = rsetMeta;
     }
+    
+    
+    public SSHTunnel getssh() {
+        return ssh;
+    }
+    
+    
+    public void setssh(SSHTunnel ssh) {
+        this.ssh = ssh;
+    }
+    
 }

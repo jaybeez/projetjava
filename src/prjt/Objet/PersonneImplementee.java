@@ -8,10 +8,24 @@ public class PersonneImplementee implements Personne {
 
     private int Numero;
 
-    private int Telephone;
+    private String Telephone;
 
     private String Adresse;
 
+    public PersonneImplementee()
+    {
+    }
+        
+    public PersonneImplementee(int Numero, String Nom, String Prenom, String Adresse, String Telephone)
+    {
+        this.Numero = Numero;
+        this.Nom = Nom;
+        this.Prenom = Prenom;
+        this.Adresse = Adresse;
+        this.Telephone = Telephone;
+    }
+    
+    
     /**
      * @return the Nom
      */
@@ -57,14 +71,14 @@ public class PersonneImplementee implements Personne {
     /**
      * @return the Telephone
      */
-    public int getTelephone() {
+    public String getTelephone() {
         return Telephone;
     }
 
     /**
      * @param Telephone the Telephone to set
      */
-    public void setTelephone(int Telephone) {
+    public void setTelephone(String Telephone) {
         this.Telephone = Telephone;
     }
 

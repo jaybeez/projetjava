@@ -8,6 +8,16 @@ public class Chambre {
 
     private int nb_lits;
 
+    private String code_service;
+
+    public String getCodeService() {
+        return code_service;
+    }
+
+    public void setCodeService(String code_service) {
+        this.code_service = code_service;
+    }
+    
     /**
      * @return the Numero
      */

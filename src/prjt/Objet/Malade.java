@@ -4,6 +4,16 @@ public class Malade extends PersonneImplementee {
 
     private String Mutuelle;
 
+    public Malade(Malade Mal)
+    {
+        super(Mal.getNumero(),Mal.getNom(), Mal.getPrenom(), Mal.getAdresse(), Mal.getTelephone()); 
+    }
+
+    public Malade()
+    {
+        
+    }
+    
     /**
      * @return the Mutuelle
      */

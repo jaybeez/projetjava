@@ -2,6 +2,16 @@ package prjt.Objet;
 
 public class Docteur extends Employe {
 
+    public Docteur()
+    {
+    }
+    
+    public Docteur(Employe Em, String Specialite)
+    {
+        super(Em);
+        this.Specialite = Specialite;
+    }
+    
     private String Specialite;
 
     /**

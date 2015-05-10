@@ -6,6 +6,29 @@ public class Infirmier extends Employe {
 
     private Float Salaire;
 
+    private String CodeService;
+
+    public Infirmier()
+    {
+    }
+    
+    public Infirmier(Employe Em, String Rotation, Float Salaire, String CodeService)
+    {
+        super(Em);
+        this.Rotation = Rotation;
+        this.Salaire = Salaire;
+        this.CodeService = CodeService;
+    }
+    
+    
+    public String getCodeService() {
+        return CodeService;
+    }
+
+    public void setCodeService(String CodeService) {
+        this.CodeService = CodeService;
+    }
+    
     /**
      * @return the Rotation
      */

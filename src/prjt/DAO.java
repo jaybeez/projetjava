@@ -1,12 +1,14 @@
 package prjt;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import prjt.Connexion;
 
 public abstract class DAO<T> {
 
-	public abstract T find(long id);
-	
+        public Connexion conn = Controleur.getConn();
+    
+	public abstract T find(int id) throws SQLException;
 	/**
 	 * Permet de créer une entrée dans la base de données
 	 * par rapport à un objet
@@ -18,7 +20,7 @@ public abstract class DAO<T> {
 	 * Permet de mettre à jour les données d'une entrée dans la base 
 	 * @param obj
 	 */
-	public abstract T update(T obj);
+	public abstract T update(T obj) throws SQLException;
 	
 	/**
 	 * Permet la suppression d'une entrée de la base

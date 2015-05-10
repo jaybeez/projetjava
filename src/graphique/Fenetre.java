@@ -48,8 +48,8 @@ public class Fenetre extends JFrame implements ActionListener {
         super("Projet d'utilisation de JDBC dans MySQL");
   
         // mise en page (layout) de la fenetre visible
-         JPanel j0= new JPanel(new FlowLayout());
-        setBounds(0, 0, 400, 400);
+        JPanel j0 = new JPanel(new FlowLayout());
+        setBounds(500, 300, 400, 400);
         setResizable(true);
         setVisible(true);
 
@@ -61,7 +61,7 @@ public class Fenetre extends JFrame implements ActionListener {
 
       
         // creation des textes
-        nameECETexte = new JTextField(50,200,100,50,"gesnel");
+        nameECETexte = new PlaceLabel(50,200,100,50,"gesnel");
         passwdECETexte = new JPasswordField(8);
         loginBDDTexte = new PlaceLabel(200,200,100,50,"gesnel");
         passwdBDDTexte = new JPasswordField(8);
@@ -77,9 +77,9 @@ public class Fenetre extends JFrame implements ActionListener {
 
         // ajout des listeners
         connect.addActionListener(this);
-        //nameECETexte.addActionListener(this);
+        nameECETexte.addActionListener(this);
         passwdECETexte.addActionListener(this);
-        //loginBDDTexte.addActionListener(this);
+        loginBDDTexte.addActionListener(this);
         passwdBDDTexte.addActionListener(this);
         bouton1.addActionListener(this);
         bouton_Fer.addActionListener(this);
@@ -89,7 +89,8 @@ public class Fenetre extends JFrame implements ActionListener {
         bouton1.setBackground(Color.green);
         bouton_Fer.setBackground(Color.yellow);
         bouton_Afc.setBackground(Color.red);
-        j0.add(nameECETexte);
+        
+        j0.add(nameECETexte.gettxtField());
         
         this.add(j0);
         /*nameECETexte=new JTextField("gesnel");
